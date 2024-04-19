@@ -1,4 +1,7 @@
 #!/bin/bash
-# Start the VNC server
-vncserver :1 -geometry 1280x800 -depth 24 &
-websockify 3000 localhost:5901
+vncserver -kill :1
+sudo rm -rf /run/dbus
+sudo mkdir -p /run/dbus
+sleep 1
+vncserver :1 -passwd /home/stardust/.vnc/passwd &
+tail -f /dev/null

@@ -1,3 +1,4 @@
 #!/bin/bash
 xrdb $HOME/.Xresources
-startxfce4 &
+export DISPLAY=":1"
+startxfce4
