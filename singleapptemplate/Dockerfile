@@ -1,7 +1,7 @@
-FROM ubuntu:latest
+FROM debian:latest
 ENV USER=stardust
 WORKDIR /app
-RUN apt-get update && apt-get install --no-install-recommends -y xfonts-75dpi xvfb passwd sudo dbus dbus-x11 libxrandr2 libxext-dev libxrender-dev libxtst-dev python3 python3-pip xterm git procps python3-numpy neofetch xfce4 wget curl xfce4-goodies inetutils-ping firefox-esr chromium-bsu gimp remmina remmina-plugin-vnc flatpak nano
+RUN apt-get update && apt-get install --no-install-recommends -y xfonts-75dpi xvfb passwd sudo dbus dbus-x11 libxrandr2 libxext-dev libxrender-dev libxtst-dev python3 python3-pip xterm git procps python3-numpy neofetch xfwm4 xfce4-terminal xfce4-session xfce4-terminal xterm xfconf xfce4-notifyd wget curl inetutils-ping gimp remmina remmina-plugin-vnc flatpak nano
 RUN apt-get install --no-install-recommends -y tigervnc-tools tigervnc-standalone-server tigervnc-common
 RUN mkdir -p /run/dbus
 RUN useradd --uid 1000 stardust
