@@ -5,7 +5,7 @@ sudo mkdir -p /run/dbus
 sleep 1
 echo "while :
 do
-vncserver :1 -passwd /home/stardust/.vnc/passwd -localhost no
+vncserver :1 -passwd /home/stardust/.vnc/passwd -fg -localhost no
 sleep 5
 done
 " | bash &
