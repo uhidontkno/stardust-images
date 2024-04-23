@@ -6,7 +6,7 @@ sleep 1
 echo "while :
 do
 
-xfce4-terminal # replace with any launch command
+chromium # replace with any launch command
 sleep 2
 
 done
