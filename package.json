@@ -1,0 +1,25 @@
+{
+	"name": "stardust-agent",
+	"version": "1.0.0",
+	"type": "module",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "tsx index.ts",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"lint": "biome lint . --apply",
+		"format": "biome format . --write"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@types/node": "^20.12.7",
+		"fastify": "^4.26.2",
+		"tsx": "^4.7.3",
+		"typescript": "^5.4.5"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.7.1"
+	}
+}
