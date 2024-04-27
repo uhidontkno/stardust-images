@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsx
 import fs from "node:fs";
 import os from "node:os";
 import Fastify from "fastify";
