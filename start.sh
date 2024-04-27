@@ -10,4 +10,4 @@ sleep 5
 done
 " | bash &
 sleep 1
-tail -f /dev/null
+tsx server/index.ts
