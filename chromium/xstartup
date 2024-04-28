@@ -6,7 +6,7 @@ sleep 1
 echo "while :
 do
 
-chromium # replace with any launch command
+chromium --no-sandbox # replace with any launch command
 sleep 2
 
 done

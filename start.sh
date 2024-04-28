@@ -1,4 +1,6 @@
 #!/bin/bash
+export VNCPASSWORD=$(openssl rand -base64 32)
+echo $VNCPASSWORD | vncpasswd -f > /home/stardust/.vnc/passwd
 vncserver -kill :1
 sudo rm -rf /run/dbus
 sudo mkdir -p /run/dbus

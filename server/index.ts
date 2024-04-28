@@ -2,57 +2,67 @@
 import fs from "node:fs";
 import os from "node:os";
 import Fastify from "fastify";
-const fastify = Fastify({
+import { execSync } from "node:child_process";
+const app = Fastify({
 	logger: true,
 });
 const home = os.homedir();
-fastify.get("/", (_req, res) => {
-	res.send({ message: "Stardust Container Agent is running" });
+const tmp = os.tmpdir();
+app.get("/", (_req, res) => res.send({ message: "Stardust Container Agent is running" }));
+app.get("/password", (_req, res) => res.send(process.env.VNCPASSWORD));
+app.get("/screenshot", async (_req, res) => {
+	fs.mkdirSync(`${tmp}/screenshots`, { recursive: true });
+	const path = `${tmp}/screenshots/window.png`;
+	execSync(`DISPLAY=:1 import -window root ${path}`);
+	const image = fs.readFileSync(path);
+	fs.unlinkSync(path);
+	res.header("Content-Type", "image/png").send(image);
 });
-fastify.get("/files/list", () => {
+app.get("/files/list", () => {
 	fs.mkdirSync(`${home}/Downloads`, { recursive: true });
 	const files = fs.readdirSync(`${home}/Downloads`);
 	return files;
 });
-fastify.get("/files/download/:name", (req, res) => {
+app.get("/files/download/:name", (req, res) => {
 	const { name: fileName } = req.params as { name: string };
 	if (!fileName) {
 		console.log("No file name provided");
-		return res.status(404).send({ error: "No file name provided" });
+		return res.code(404).send({ error: "No file name provided" });
 	}
 	try {
 		const file = fs.readFileSync(`${home}/Downloads/${fileName}`);
 		res.send(file);
 	} catch (e) {
 		console.log(e);
-		res.status(500).send({ error: "File not found" });
+		res.code(500).send({ error: "File not found" });
 	}
 });
-fastify.addContentTypeParser("*", (_request, payload, done) => done(null, payload));
-fastify.put("/files/upload/:name", async (req, res) => {
+app.addContentTypeParser("*", (_request, payload, done) => done(null, payload));
+app.put("/files/upload/:name", async (req, res) => {
 	const { name: fileName } = req.params as { name: string };
 	if (!fileName) {
 		console.log("No file name provided");
-		return res.status(404).send({ error: "No file name provided" });
+		return res.code(404).send({ error: "No file name provided" });
 	}
 
-	const buffers: Buffer[] = [];
 	try {
+		fs.mkdirSync(`${home}/Uploads`, { recursive: true });
+		const fileStream = fs.createWriteStream(`${home}/Uploads/${fileName}`);
 		await new Promise<void>((resolve, reject) => {
 			req.raw.on("data", (chunk) => {
-				buffers.push(chunk);
+				fileStream.write(chunk);
 			});
 			req.raw.on("end", () => {
+				fileStream.end();
 				resolve();
 			});
 			req.raw.on("error", (err) => {
+				console.log(err);
+				fileStream.end();
+				fs.unlinkSync(`${home}/Uploads/${fileName}`);
 				reject(err);
 			});
 		});
-		const buffer = Buffer.concat(buffers);
-		fs.mkdirSync(`${home}/Uploads`, { recursive: true });
-		fs.writeFileSync(`${home}/Uploads/${fileName}`, buffer);
-
 		console.log(`File ${fileName} uploaded`);
 		res.send({ success: true });
 	} catch (e) {
@@ -62,8 +72,8 @@ fastify.put("/files/upload/:name", async (req, res) => {
 });
 
 try {
-	await fastify.listen({ port: 6080, host: '0.0.0.0' });
+	await app.listen({ port: 6080, host: "0.0.0.0" });
 } catch (err) {
-	fastify.log.error(err);
+	app.log.error(err);
 	process.exit(1);
 }
