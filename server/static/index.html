@@ -1,41 +1,48 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-    <head>
-        <title>Stardust Container Agent</title>
-        <link rel="stylesheet" type="text/css" href="/out.css">
-        <script src="https://unpkg.com/lucide@latest"></script>
-<script>
-const themes = ["light", "dark", "slate", "mocha"]
-function setInitialTheme() {
-  const root = window.document.documentElement;
-  const theme = localStorage.theme;
-  if (!theme) {
-    localStorage.theme = "system";
-  }
-  if (theme === "system") {
-    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-	root.classList.add(systemTheme);
-	return;
-  }
-  root.classList.add(theme);
-}
-setInitialTheme()
-function setTheme() {
-  const theme = localStorage.theme;
-  const currentIndex = themes.indexOf(theme);
-  const nextIndex = (currentIndex + 1) % themes.length;
-  localStorage.theme = themes[nextIndex];
-  const root = window.document.documentElement;
-  root.classList.remove(...themes);
-  root.classList.add(themes[nextIndex]);
-}
-</script>
-        <script>
-        window.addEventListener("load", () => {
-         fetch("/password").then(res => res.text()).then((data) =>
-            document.getElementById("vncpasswd").innerText = data
+  <head>
+    <title>Stardust Container Agent</title>
+    <link rel="stylesheet" type="text/css" href="/out.css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      const themes = ["light", "dark", "slate", "mocha"];
+      function setInitialTheme() {
+        const root = window.document.documentElement;
+        const theme = localStorage.theme;
+        if (!theme) {
+          localStorage.theme = "system";
+        }
+        if (theme === "system") {
+          const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+            .matches
+            ? "dark"
+            : "light";
+          root.classList.add(systemTheme);
+          return;
+        }
+        root.classList.add(theme);
+      }
+      setInitialTheme();
+      function setTheme() {
+        const theme = localStorage.theme;
+        const currentIndex = themes.indexOf(theme);
+        const nextIndex = (currentIndex + 1) % themes.length;
+        localStorage.theme = themes[nextIndex];
+        const root = window.document.documentElement;
+        root.classList.remove(...themes);
+        root.classList.add(themes[nextIndex]);
+      }
+    </script>
+    <script>
+      window.addEventListener("load", () => {
+        fetch("/password")
+          .then((res) => res.text())
+          .then(
+            (data) => (document.getElementById("vncpasswd").innerText = data),
           );
-           fetch("/files/list").then(res => res.json()).then((data) => {
+        fetch("/files/list")
+          .then((res) => res.json())
+          .then((data) => {
             if (data.length === 0) {
               document.getElementById("fileslist").innerHTML = `
                 <div class="relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground w-auto">
@@ -43,13 +50,13 @@ function setTheme() {
                 <p class="mb-1 font-medium leading-none tracking-tight">There are no files in the container.</p>
                 <p class="text-sm [&_p]:leading-relaxed">Upload files to the container to see them here.</p>
                 </div>
-                `
+                `;
               lucide.createIcons();
-              return
+              return;
             }
-           for (let i = 0; i < data.length; i++) {
-             const file = data[i];
-             const el = `
+            for (let i = 0; i < data.length; i++) {
+              const file = data[i];
+              const el = `
                <div class="rounded-lg border bg-card text-card-foreground shadow-sm flex justify-between items-center p-4 h-16 w-auto gap-2 mt-2">
                   <i data-lucide="file" className="size-5 flex-shrink-0"></i>
                   <span className="text-sm truncate overflow-x-scroll">${file}</span>
@@ -57,32 +64,50 @@ function setTheme() {
                     <i data-lucide="download"></i>
                   </a>
                 </div>
-               `
-               if (i !== 0) {
-                 document.getElementById("fileslist").innerHTML += el;
-               } else {
-                 document.getElementById("fileslist").innerHTML = el;
-               }
-               lucide.createIcons();
-           }
+               `;
+              if (i !== 0) {
+                document.getElementById("fileslist").innerHTML += el;
+              } else {
+                document.getElementById("fileslist").innerHTML = el;
+              }
+              lucide.createIcons();
+            }
           });
-        })
-        </script>
-    </head>
-    <body class="flex items-center justify-center min-h-screen flex-col overflow-y-auto gap-4 mb-20">
-        <h1 class="text-4xl font-bold mt-20"><i data-lucide="sparkles" class="inline mx-2 size-10"></i>Stardust</h1>
-            <p>Container agent is running and connected to the Stardust host machine.</p>
-            <p class="text-sm">VNC Password is <span class="font-mono font-semibold" id="vncpasswd">loading...</span>, for debugging purposes.</p>
-            <h2 class="font-semibold text-xl">System screenshot</h2>
-            <img class="aspect-video object-fill rounded-sm md:h-[26rem] md:w-[52rem] bg-muted" src="/screenshot">
-        <h2 class="font-semibold text-xl">Files list</h2>
-       <section id="fileslist" class="w-full px-32">
-           <div class="animate-pulse rounded-md bg-muted w-full px-8 h-16"></div>
-       </section>
-    <button onclick="setTheme()" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground fixed top-2 right-2 h-10 px-4 py-2">
-        <i data-lucide="swatch-book" class="size-5 mr-2"></i>
-        Theme
+      });
+    </script>
+  </head>
+  <body
+    class="flex items-center justify-center min-h-screen flex-col overflow-y-auto gap-4 mb-20"
+  >
+    <h1 class="text-4xl font-bold mt-20">
+      <i data-lucide="sparkles" class="inline mx-2 size-10"></i>Stardust
+    </h1>
+    <p>
+      Container agent is running and connected to the Stardust host machine.
+    </p>
+    <p class="text-sm">
+      VNC Password is
+      <span class="font-mono font-semibold" id="vncpasswd">loading...</span>,
+      for debugging purposes.
+    </p>
+    <h2 class="font-semibold text-xl">System screenshot</h2>
+    <img
+      class="aspect-video object-fill rounded-sm md:h-[26rem] md:w-[52rem] bg-muted"
+      src="/screenshot"
+    />
+    <h2 class="font-semibold text-xl">Files list</h2>
+    <section id="fileslist" class="w-full px-32">
+      <div class="animate-pulse rounded-md bg-muted w-full px-8 h-16"></div>
+    </section>
+    <button
+      onclick="setTheme()"
+      class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground fixed top-2 right-2 h-10 px-4 py-2"
+    >
+      <i data-lucide="swatch-book" class="size-5 mr-2"></i>
+      Theme
     </button>
-    </body>
-    <script>lucide.createIcons();</script>
+  </body>
+  <script>
+    lucide.createIcons();
+  </script>
 </html>
