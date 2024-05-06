@@ -5,9 +5,7 @@ startxfce4 &
 sleep 1
 echo "while :
 do
-
-chromium --no-sandbox # replace with any launch command
+chromium --no-sandbox
 sleep 2
-
 done
 " | bash

@@ -1,14 +1,17 @@
 #!/usr/bin/env tsx
+import { execSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
+import path from "node:path";
+import fastifyStatic from "@fastify/static";
 import Fastify from "fastify";
-import { execSync } from "node:child_process";
 const app = Fastify({
 	logger: true,
 });
 const home = os.homedir();
 const tmp = os.tmpdir();
-app.get("/", (_req, res) => res.send({ message: "Stardust Container Agent is running" }));
+
+app.get("/healthcheck", (_req, res) => res.send({ message: "Stardust Container Agent is running" }));
 app.get("/password", (_req, res) => res.send(process.env.VNCPASSWORD));
 app.get("/screenshot", async (_req, res) => {
 	fs.mkdirSync(`${tmp}/screenshots`, { recursive: true });
@@ -70,7 +73,9 @@ app.put("/files/upload/:name", async (req, res) => {
 		res.status(500).send({ error: "Upload failed" });
 	}
 });
-
+app.register(fastifyStatic, {
+	root: path.join(import.meta.dirname, "static"),
+});
 try {
 	await app.listen({ port: 6080, host: "0.0.0.0" });
 } catch (err) {
