@@ -18,7 +18,7 @@ USER stardust
 RUN mkdir -p /home/stardust/.vnc
 RUN touch /home/stardust/.Xresources
 COPY ./server ./server
-RUN cd server && sudo npm i -g pnpm tsx && sudo pnpm i
+RUN cd server && sudo npm i -g pnpm tsx && sudo pnpm i && sudo pnpm build
 COPY ./start.sh ./start.sh
 COPY ./chromium/xstartup ./xstartup
 RUN cp ./xstartup /home/stardust/.vnc/xstartup
