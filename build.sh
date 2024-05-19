@@ -29,9 +29,15 @@ if [ "$EUID" -ne 0 ]; then
     printf "$BANNER$BRED Not running as sudo! You may encounter permission errors.$OFF \n"
 fi
 
-printf "$BANNER$BYELLOW Building$OFF all images!\n\n"
+if [[ "$1" == "--only-build" ]]; then
+    printf "$BANNER$BYELLOW Building$OFF provided images!\n\n"
+    shift
+    images=("$@")
+else
+    printf "$BANNER$BYELLOW Building$OFF all images!\n\n"
+    images=("chromium" "debian" "firefox" "gimp")
+fi
 
-images=("chromium" "debian" "firefox" "gimp")
 
 push_flag=false
 for arg in "$@"; do
@@ -43,6 +49,7 @@ done
 
 
 for t in ${images[@]}; do
+    printf "$BANNER$BGREEN Building$OFF $BLUE$t$OFF\n"
 	docker build -t ghcr.io/spaceness/$t -f $t/Dockerfile .;
 	if $push_flag; then
  	printf "$BANNER$BBLUE Pushing$OFF Docker container$BLUE ghcr.io/spaceness/$t$OFF\n"
