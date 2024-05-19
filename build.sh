@@ -25,7 +25,11 @@ BWHITE='\033[1;37m'       # WHITE
 
 BANNER="$GREEN✨ Stardust$OFF:"
 
-printf "$BANNER$BYELLOW Building$OFF all images!\n"
+if [ "$EUID" -ne 0 ]; then
+    printf "$BANNER$BRED Not running as sudo! You may encounter permission errors.$OFF \n"
+fi
+
+printf "$BANNER$BYELLOW Building$OFF all images!\n\n"
 
 images=("chromium" "debian" "firefox" "gimp")
 
