@@ -1,0 +1,13 @@
+#!/bin/bash
+xrdb $HOME/.Xresources
+export DISPLAY=":1"
+startxfce4 &
+sleep 1
+cd files
+chmod +x ./SpaceCadetPinball
+echo "while :
+do
+./SpaceCadetPinball
+sleep 2
+done
+" | bash
