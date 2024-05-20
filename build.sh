@@ -35,7 +35,7 @@ if [[ "$1" == "--only-build" ]]; then
     images=("$@")
 else
     printf "$BANNER$BYELLOW Building$OFF all images!\n\n"
-    images=("chromium" "debian" "firefox" "gimp")
+    images=("chromium" "debian" "firefox" "gimp" "debian-kde" "pinball")
 fi
 
 
