@@ -1,11 +1,9 @@
 FROM debian:latest
+LABEL org.opencontainers.image.source https://github.com/spaceness/stardust-images
 ENV USER=stardust
 ENV PNPM_HOME="/home/stardust/.local/share/pnpm"
 WORKDIR /app
-RUN apt-get update && apt-get install --no-install-recommends -y \
-    xfonts-75dpi xvfb passwd sudo dbus dbus-x11 libxrandr2 libxext-dev libxrender-dev libxtst-dev \
-    python3 python3-pip xterm procps python3-numpy \
-     xfwm4 xfce4-terminal xfce4-session xterm xfconf xfce4-notifyd wget curl inetutils-ping imagemagick nano
+RUN apt-get update && apt-get install --no-install-recommends -y xfonts-75dpi xvfb passwd sudo dbus dbus-x11 libxrandr2 libxext-dev libxrender-dev libxtst-dev python3 python3-pip xterm git procps python3-numpy neofetch xfce4 wget curl xfce4-goodies inetutils-ping firefox-esr chromium gimp imagemagick remmina remmina-plugin-vnc flatpak nano
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - &&\
     apt-get install -y nodejs
 RUN apt-get install --no-install-recommends -y \

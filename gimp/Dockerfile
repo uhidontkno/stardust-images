@@ -1,4 +1,5 @@
 FROM debian:latest
+LABEL org.opencontainers.image.source https://github.com/spaceness/stardust-images
 ENV USER=stardust
 ENV PNPM_HOME="/home/stardust/.local/share/pnpm"
 WORKDIR /app
