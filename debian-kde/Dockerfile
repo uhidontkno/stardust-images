@@ -20,7 +20,7 @@ RUN chmod 777 /home/stardust
 RUN chmod 777 /app
 RUN echo "stardust ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 RUN usermod -aG sudo stardust
-RUN echo 'root:' | chpasswd -e
+#RUN echo 'root:' | chpasswd -e
 RUN echo 'stardust:' | chpasswd -e
 USER stardust
 RUN mkdir -p /home/stardust/.vnc
