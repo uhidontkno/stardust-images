@@ -1,10 +1,13 @@
-# stardust-images
+# Stardust Images
 
-Docker workspaces with TigerVNC preinstalled, made for Stardust. These images can be ran seperately though.
+Docker workspaces with TigerVNC preinstalled, created specifically for Stardust. However, these images can also be used independently.
 
-Also included is a fastify server for file upload/download
+Additionally, a Fastify server is included for file upload and download functionality.
 
-Run with:
-```
-docker run -it --rm -p 5901:5901 6080:6080 ghcr.io/spaceness/debian:latest # using debian as an example
+### Running the Docker Image
+
+To run the Docker image, use the following command (using Debian as an example):
+
+```bash
+docker run -it --rm -p 5901:5901 -p 6080:6080 ghcr.io/spaceness/debian:latest
 ```
