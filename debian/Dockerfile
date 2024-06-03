@@ -25,7 +25,7 @@ USER ${USER}
 
 COPY ./server ./server
 COPY ./start.sh ./start.sh
-COPY ./firefox/xstartup ./xstartup
+COPY ./debian/xstartup ./xstartup
 
 RUN cp ./xstartup /home/${USER}/.vnc/xstartup && \
     chmod +x /home/${USER}/.vnc/xstartup && \
