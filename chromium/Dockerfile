@@ -26,7 +26,7 @@ RUN touch /home/stardust/.Xresources /home/stardust/.Xauthority
 
 COPY ./server ./server
 COPY ./start.sh ./start.sh
-COPY ./firefox/xstartup ./xstartup
+COPY ./xstartup ./xstartup
 
 RUN cp ./xstartup /home/stardust/.vnc/xstartup && \
     chmod +x /home/stardust/.vnc/xstartup && \
