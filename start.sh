@@ -12,4 +12,5 @@ sleep 5
 done
 " | bash &
 sleep 1
-tsx server/index.ts
+npx tsx server/index.ts
+sleep 30
